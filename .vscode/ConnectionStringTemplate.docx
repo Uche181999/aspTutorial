@@ -1,0 +1,4 @@
+"Data Source={PCNAME}\\SQLEXPRESS;Initial Catalog={DATABASENAME};Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
+
+Azure Edge Connection String Template (MAC OS ARM):
+"Data Source=localhost;Initial Catalog=finshark;User Id=sa;Password=MyPass@word;Integrated Security=True;TrustServerCertificate=true;Trusted_Connection=false"
