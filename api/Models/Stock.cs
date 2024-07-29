@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.ComponentModel.DataAnnotation.Schema;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Threading.Tasks;
 
 namespace api.Models
@@ -17,9 +17,9 @@ namespace api.Models
         public decimal LastDiv { get; set; }
         public string Industry { get; set; } = string.Empty;
         public long MarketCap { get; set; }
-        
+
         //conection to comment table
-        public list<Comment> Comments { get; set; }= new list<Comment>();
+        public List<Comment> Comments { get; set; } = new List<Comment>();
 
     }
 }

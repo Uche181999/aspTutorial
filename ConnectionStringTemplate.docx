@@ -2,3 +2,14 @@
 
 Azure Edge Connection String Template (MAC OS ARM):
 "Data Source=localhost;Initial Catalog=finshark;User Id=sa;Password=MyPass@word;Integrated Security=True;TrustServerCertificate=true;Trusted_Connection=false"
+
+
+using sql server developer authentication
+"DefaultConnection": "Server=DESKTOP-LVTQ07L\\UCHE;Database=myNewDatabase;User Id=sa;Password=uche;MultipleActiveResultSets=true;TrustServerCertificate=True"
+
+using sql server developer windows authentication
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=DESKTOP-LVTQ07L\\UCHE;Database=myNewDatabase;Integrated Security=True;MultipleActiveResultSets=true;TrustServerCertificate=True"
+  }
+}
