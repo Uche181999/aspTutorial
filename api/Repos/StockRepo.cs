@@ -6,6 +6,7 @@ using api.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using api.Models;
 using api.Data;
+using api.Dtos.Stock;
 
 namespace api.Repos
 {
@@ -13,14 +14,60 @@ namespace api.Repos
     {
         private readonly AppDbContext _context;
 
-        public StockRepo(AppDbContext context) 
+        public StockRepo(AppDbContext context)
         {
             _context = context;
         }
-        public Task<List<Stock>> GetAllStocksAsync()
-        
+        public async Task<List<Stock>> GetAllAsync()
+
         {
-            return  _context.Stocks.ToListAsync();
+            return await _context.Stocks.ToListAsync();
         }
+        public async Task<Stock?> GetByIdAsync(int id)
+        {
+            var stock = await _context.Stocks.FindAsync(id);
+            if (stock == null)
+            {
+                return null;
+            }
+            return stock;
+        }
+        public async Task<Stock> CreateAsync(Stock stockModel)
+        {
+            await _context.Stocks.AddAsync(stockModel);
+            await _context.SaveChangesAsync();
+            return stockModel;
+        }
+        public async Task<Stock?> UpdateAsync(int id, UpdateStockDto updateDto)
+        {
+
+            var existStock = await _context.Stocks.FirstOrDefaultAsync(s => s.Id == id);
+            if (existStock == null)
+            {
+                return null;
+            }
+            existStock.Symbol = updateDto.Symbol;
+            existStock.CompanyName = updateDto.CompanyName;
+            existStock.Purchase = updateDto.Purchase;
+            existStock.LastDiv = updateDto.LastDiv;
+            existStock.Industry = updateDto.Industry;
+            existStock.MarketCap = updateDto.MarketCap;
+
+            await _context.SaveChangesAsync();
+            return existStock;
+
+        }
+        public async Task<Stock?> DeleteAsync(int id)
+        {
+            var stockModel = await _context.Stocks.FirstOrDefaultAsync(s => s.Id == id);
+            if (stockModel == null)
+            {
+                return null;
+            }
+            _context.Stocks.Remove(stockModel);
+            await _context.SaveChangesAsync();
+            return stockModel;
+        }
+
     }
 }
