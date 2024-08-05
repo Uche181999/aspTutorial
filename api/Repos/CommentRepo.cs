@@ -20,8 +20,17 @@ namespace api.Repos
         }
         public async Task<List<Comment>> GetAllAsync()
         {
-            return await _context.Comments.ToListAsync(); 
+            return await _context.Comments.ToListAsync();
 
+        }
+        public async Task<Comment?> GetByIdAsync(int id)
+        {
+            var comment = await _context.Comments.FindAsync(id);
+            if (comment == null)
+            {
+                return null;
+            }
+            return comment;
         }
     }
 }
