@@ -6,9 +6,10 @@ using Microsoft.EntityFrameworkCore;
 using api.Interfaces;
 using api.Models;
 using api.Repos;
-using api.Dtos;
+using api.Dtos.Comment;
 using api.Mappers;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace api.Controllers
 {
@@ -17,9 +18,11 @@ namespace api.Controllers
     public class CommentController : ControllerBase
     {
         private readonly ICommentRepo _commentRepo;
-        public CommentController(ICommentRepo commentRepo)
+        private readonly IStockRepo _stockRepo;
+        public CommentController(ICommentRepo commentRepo, IStockRepo stockRepo)
         {
             _commentRepo = commentRepo;
+            _stockRepo = stockRepo;
 
         }
         [HttpGet]
@@ -38,8 +41,19 @@ namespace api.Controllers
                 return NotFound();
             }
             return Ok(comment.ToCommentDto());
-        }
 
+        }
+        [HttpPost("{stockId}")]
+        public async Task<IActionResult> Create([FromRoute] int stockId, [FromBody] CreateCommentDto commentDto)
+        {
+            if (!await _stockRepo.StockExistAsync(stockId))
+            {
+                return BadRequest("stock id does not exist");
+            }
+            var commentModel = commentDto.ToCreateCommentDto(stockId);
+            await _commentRepo.CreateAsync(commentModel);
+            return CreatedAtAction(nameof(GetById), new { id = commentModel.Id }, commentModel.ToCommentDto());
+        }
 
 
     }

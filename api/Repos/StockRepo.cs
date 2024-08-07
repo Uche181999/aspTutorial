@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using api.Models;
 using api.Data;
 using api.Dtos.Stock;
+using Newtonsoft.Json;
 
 namespace api.Repos
 {
@@ -21,11 +22,11 @@ namespace api.Repos
         public async Task<List<Stock>> GetAllAsync()
 
         {
-            return await _context.Stocks.ToListAsync();
+            return await _context.Stocks.Include(c => c.Comments).ToListAsync();
         }
         public async Task<Stock?> GetByIdAsync(int id)
         {
-            var stock = await _context.Stocks.FindAsync(id);
+            var stock = await _context.Stocks.Include(c => c.Comments).FirstOrDefaultAsync(s => s.Id == id);
             if (stock == null)
             {
                 return null;
@@ -67,6 +68,10 @@ namespace api.Repos
             _context.Stocks.Remove(stockModel);
             await _context.SaveChangesAsync();
             return stockModel;
+        }
+        public async Task<bool> StockExistAsync(int stockId)
+        {
+            return await _context.Stocks.AnyAsync(s => s.Id == stockId);
         }
 
     }
