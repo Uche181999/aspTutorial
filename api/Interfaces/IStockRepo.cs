@@ -6,13 +6,14 @@ using api.Models;
 using api.Data;
 using api.Dtos.Stock;
 using Microsoft.EntityFrameworkCore;
+using api.Helper;
 
 
 namespace api.Interfaces
 {
     public interface IStockRepo
     {
-        Task<List<Stock>> GetAllAsync();
+        Task<List<Stock>> GetAllAsync(QueryObject query);
         Task<Stock?> GetByIdAsync(int id );
         Task<Stock> CreateAsync(Stock stockmodel);
         Task<Stock?> UpdateAsync(int id ,UpdateStockDto updateDto);
