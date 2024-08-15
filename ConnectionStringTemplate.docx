@@ -1,3 +1,4 @@
+//conection string for sqlserver
 "Data Source={PCNAME}\\SQLEXPRESS;Initial Catalog={DATABASENAME};Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
 
 Azure Edge Connection String Template (MAC OS ARM):
@@ -13,3 +14,39 @@ using sql server developer windows authentication
     "DefaultConnection": "Server=DESKTOP-LVTQ07L\\UCHE;Database=myNewDatabase;Integrated Security=True;MultipleActiveResultSets=true;TrustServerCertificate=True"
   }
 }
+
+// Database appdbcontext
+amespace api.Data
+{
+    public class AppDbContext : DbContext
+    {
+        public AppDbContext(DbContextOptions options) : base(options)
+        {
+
+        }
+        public DbSet<(first table)> plural of table name { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+
+        // seeding of data (inital population a database table)
+
+         protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            Door[] doors = [
+                new Door("", "",)
+            ];
+
+            modelBuilder.Entity<Door>().HasData(doors);
+        }
+    }
+}
+
+//adding connection string after creating appdbcontext
+in the program.cs 
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+//then in the appsettings.json add 
+ConnectionStrings": {
+  //if database is sqlserver use this else check for the correct syntax
+    "DefaultConnection": "Server=DESKTOP-LVTQ07L\\UCHE;Database=myNewDatabase;User Id=sa;Password=uche;MultipleActiveResultSets=true;TrustServerCertificate=True"
+  },
