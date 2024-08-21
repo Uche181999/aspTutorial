@@ -11,7 +11,7 @@ using api.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 
-namespace api.Controllers
+namespace api.Controllers:
 {
     [Route("api/comment")]
     [ApiController]
